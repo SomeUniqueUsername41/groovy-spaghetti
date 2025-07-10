@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year Proximity Comparer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"], select {
+      width: calc(100% - 24px);
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Year Proximity Comparer</h2>
+    <label for="base-year">Base Year:</label>
+    <input type="text" id="base-year" placeholder="Enter base year">
+
+    <label for="range-select">Select range to compare:</label>
+    <select id="range-select">
+      <option value="1,2">Subtract 1, Add 2</option>
+      <option value="2,3">Subtract 2, Add 3</option>
+    </select>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function compareYears() {
+      var baseYear = parseFloat(document.getElementById('base-year').value);
+      var rangeValue = document.getElementById('range-select').value;
+      var [sub, add] = rangeValue.split(',').map(Number);
+
+      if (isNaN(baseYear)) {
+        document.getElementById('result').innerText = "Please enter a valid base year.";
+        return;
+      }
+
+      var year1 = baseYear - sub;
+      var year2 = baseYear + add;
+
+      var diff1 = Math.abs(baseYear - year1);
+      var diff2 = Math.abs(baseYear - year2);
+
+      var resultText = "";
+
+      if (diff1 < diff2) {
+        resultText = baseYear + " is closer to " + year1 + " than to " + year2;
+      } else if (diff2 < diff1) {
+        resultText = baseYear + " is closer to " + year2 + " than to " + year1;
+      } else {
+        resultText = baseYear + " is equidistant to " + year1 + " and " + year2;
+      }
+
+      document.getElementById('result').innerText = resultText;
+    }
+
+    document.getElementById('base-year').addEventListener('input', compareYears);
+    document.getElementById('range-select').addEventListener('change', compareYears);
+  </script>
+</body>
+</html>
